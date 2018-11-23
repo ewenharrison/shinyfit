@@ -2,7 +2,7 @@ library(shiny)
 
 # Fit
 df.out = reactive({
-	finalfit::finalfit(subdata(), dependent = input$outcome, explanatory = input$explanatory1,
+	finalfit::finalfit(subdata(), dependent = dependent(), explanatory = input$explanatory1,
 										 explanatory_multi = input$explanatory2,
 										 random_effect = input$random_effects1,
 										 confint_type = input$confint_type, keep_models=!input$keep_models,

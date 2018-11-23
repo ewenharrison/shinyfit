@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyjs)
 library(finalfit)
 
 # UI updates
@@ -6,6 +7,32 @@ library(finalfit)
 observe({
 	updateTextInput(session, "h1", value = shinyfit_name)
 })
+
+## Add optional dataset selector if more than one dataset provided
+# if(dataset_n >1){
+# 	insertUI(
+# 		selector = '#placeholder',
+# 		ui = radioButtons("dataset",
+# 											label = "Select:",
+# 											#choices = c(1,2),
+# 											choiceNames = list("Dataset 1", "Dataset 2"),
+# 											choiceValues = list(1, 2),
+# 											selected = 1, 
+# 											inline=TRUE)
+# 	)}
+
+# Select dataset
+# observe({
+# 	if(!is.null(input$dataset)){
+# 		if(input$dataset == 1){
+# 			list2objects(alldata1)
+# 			js$reset()
+# 		}else if (input$dataset == 2){
+# 			list2objects(alldata2)
+# 			js$reset()
+# 		}
+# 	}
+# })
 
 ## Explanatory_multi (explanatory2) to only include variables from explanatory (explanatory1)
 explanatory2_update = reactive({
@@ -49,7 +76,17 @@ subdata = reactive({
 			mutate_if(names(.) %in% unlist(alldata_names_list_explanatory) & 
 									sapply(., is.factor),
 								forcats::fct_explicit_na
-								)
+			)
 	}
 	return(subdata)
+})
+
+# Define outcome
+## Define dependent variable if survival object
+dependent = reactive({
+	if(!input$survival){
+		input$outcome
+	}else if(input$survival){
+		paste0("Surv(", input$outcome, ",", input$status, ")")	
+	}
 })

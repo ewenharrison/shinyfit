@@ -9,9 +9,9 @@ library(dplyr)
 library(finalfit)
 library(DT)
 
-# Load dataset(s)
-load("data/alldata.rda") %>% 
-	length() -> "dataset_n"
+
+# Data
+source(file.path("server", "server0_data.R"),  local = TRUE)$value
 
 # Define UI
 ui <- fluidPage(
@@ -35,20 +35,6 @@ ui <- fluidPage(
 
 # Server
 server <- function(input, output, session) {
-	
-	
-# 
-# 		# Select dataset
-# 	reactive({
-# 		if(input$dataset == "Colon"){
-# 			load("data/alldata1.rda")
-# 		}else if(input$dataset == "GS2"){
-# 			load("data/alldata2.rda")
-# 		}
-# 	})
-	
-	# Data
-	source(file.path("server", "server0_data.R"),  local = TRUE)$value
 	
 	# UI updates and subsetting
 	source(file.path("server", "server1_ui_updates.R"),  local = TRUE)$value

@@ -1,3 +1,6 @@
+# Preamble to do. 
+
+# Dataset 1 ------------------------------
 # Provide data to app
 library(finalfit)
 
@@ -36,7 +39,7 @@ alldata_names_list = list(Outcomes = alldata_names[c(15, 14, 10)],
 alldata_names_list_explanatory = alldata_names_list[-1]
 
 # Create lookup table of names (required)
-alldata_names_lookup = extract_labels(colon_s)
+alldata_names_lookup = extract_labels(alldata)
 
 # Create list for subsetting data, this is limited to factors
 alldata %>% 
@@ -61,7 +64,7 @@ shinyfit_name = "Colon dataset"
 dataset_label = "colon_s"
 
 # Make final list for app
-alldata1 = list(alldata=alldata,
+alldata_list = list(alldata=alldata,
 								alldata_names = alldata_names,
 								alldata_names_list=alldata_names_list,
 								alldata_names_list_explanatory=alldata_names_list_explanatory,
@@ -69,15 +72,150 @@ alldata1 = list(alldata=alldata,
 								alldata_subset_names_list=alldata_subset_names_list,
 								shinyfit_name=shinyfit_name,
 								dataset_label=dataset_label)
-class(alldata1) = "shinyfit"
-save(alldata1, file="data/alldata.rda")	
+class(alldata_list) = "shinyfit"
 
-load("data/alldata.rda") %>% 
-	length() -> "dataset_n"
-
+save(alldata_list, file="data/alldata.rda")	
 
 # Clear workspace prior to assembling second dataset
 rm(list=ls())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Dataset 2-------------------------------
+# Provide data to app
+library(finalfit)
+library(dplyr)
+library(forcats)
+
+# colon_s example
+# Read data to "alldata"
+alldata = boot::melanoma
+
+# Display variable names
+names(alldata)
+
+# Select subset of variables to keep
+alldata = alldata %>% 
+	dplyr::select(1:7)
+
+# Recode factor levels if necessary
+alldata %<>% 
+	mutate(
+		sex = factor(sex) %>% 
+			fct_recode(Male = "1",
+								 Female = "0"),
+		ulcer = factor(ulcer) %>% 
+			fct_recode(Yes = "1",
+								 No = "0")
+	)
+
+# Add variable labels if wish
+alldata$time %<>% ff_label("Time since operation (days)")
+alldata$status %<>% ff_label("Status")
+alldata$sex %<>% ff_label("Sex")
+alldata$age %<>% ff_label("Age (years)")
+alldata$year %<>% ff_label("Year of operation")
+alldata$thickness %<>% ff_label("Thickness (mm)")
+alldata$ulcer %<>% ff_label("Ulcer")
+
+
+# View dataset
+ff_glimpse(alldata)
+
+# Extract variable names and labels. 
+alldata_names = names(alldata) 
+names(alldata_names) = extract_variable_label(alldata)
+
+# Arrange variable names for purposes of dropdown display
+matrix(alldata_names)
+
+# Choose how to arrange the above list:
+alldata_names_list = list(Outcomes = alldata_names[c(1, 2)],
+													Explanatory = alldata_names[c(3:7)],
+													Groups = ""
+)
+
+# Remove outcomes from explanatory list
+alldata_names_list_explanatory = alldata_names_list[-1]
+
+# Create lookup table of names (required)
+alldata_names_lookup = extract_labels(alldata)
+
+# Create list for subsetting data, this is limited to factors
+alldata %>% 
+	dplyr::select_if(is.factor) -> alldata_subset
+
+alldata_subset_names = names(alldata_subset) 
+names(alldata_subset_names) = extract_variable_label(alldata_subset)
+rm(alldata_subset)
+
+# Arrange variable names for SUBSET dropdown list
+matrix(alldata_subset_names)
+
+# Choose how to arrange the above list:
+alldata_subset_names_list = list(#Outcomes = "",
+																 Explanatory = alldata_subset_names[c(1,2)]#,
+																 #Groups = ""
+)
+rm(alldata_subset_names)
+
+# Name project
+shinyfit_name = "Melanoma dataset"
+dataset_label = "melanoma"
+
+# Make final list for app
+alldata_list = list(alldata=alldata,
+								alldata_names = alldata_names,
+								alldata_names_list=alldata_names_list,
+								alldata_names_list_explanatory=alldata_names_list_explanatory,
+								alldata_names_lookup=alldata_names_lookup,
+								alldata_subset_names_list=alldata_subset_names_list,
+								shinyfit_name=shinyfit_name,
+								dataset_label=dataset_label)
+class(alldata_list) = "shinyfit"
+save(alldata_list, file="data/alldata.rda")	
+
+# Clear workspace prior to assembling second dataset
+rm(list=ls())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

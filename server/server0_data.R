@@ -1,11 +1,22 @@
-
-if(dataset_n == 1){
-	alldata = alldata1$alldata
-	alldata_names = alldata1$alldata_names
-	alldata_names_list = alldata1$alldata_names_list
-	alldata_names_list_explanatory = alldata1$alldata_names_list_explanatory
-	alldata_names_lookup = alldata1$alldata_names_lookup         
-	alldata_subset_names_list = alldata1$alldata_subset_names_list
-	shinyfit_name = alldata1$shinyfit_name
-	dataset_label = alldata1$dataset_label
+# Functions
+## To expand list to global environment objects
+list2objects = function(.list){
+	for (i in 1:length(.list)){
+		assign(
+			names(.list)[i], .list[[i]],
+			envir = .GlobalEnv
+		)
+	}
 }
+
+#jsResetCode <- "shinyjs.reset = function() {history.go(0)}"
+
+# Load dataset(s)
+load("data/alldata.rda") %>% 
+	length() -> "dataset_n"
+
+list2objects(alldata_list)
+
+# alldata <- reactive({
+# 	alldata1
+# })

@@ -10,7 +10,7 @@ explanatory = reactive({
 })
 
 output$plot.out = renderPlot({
-	finalfit::ff_plot(subdata(), dependent = input$outcome, explanatory = explanatory(),
+	finalfit::ff_plot(subdata(), dependent = dependent(), explanatory = explanatory(),
 										random_effect = input$random_effects1,
 										confint_type = input$confint_type)
 })
