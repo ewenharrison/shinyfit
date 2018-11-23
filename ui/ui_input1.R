@@ -1,5 +1,11 @@
 wellPanel(
-	textInput("h1", "Project", value = shinyfit_name),
+	h4('Dataset'),
+	radioButtons("dataset",
+							 label = "Select:",
+							 choices = c("Colon", "GS2"),
+							 selected = "Colon", 
+							 inline=TRUE),
+	textInput("h1", "Project name", value = ""),
 	h4('Model parameters:'),
 	selectInput("outcome",
 							label    = "Outcome/dependent variable:",
@@ -27,16 +33,16 @@ wellPanel(
 	conditionalPanel(condition = 'input.subset == true',
 									 selectInput("subset_variable",
 									 						label    = "Variable to subset by:",
-									 						selected = alldata_factors_names_list$Explanatory[1],
-									 						choices  = alldata_factors_names_list,
+									 						selected = alldata_subset_names_list$Explanatory[1],
+									 						choices  = alldata_subset_names_list,
 									 						selectize = FALSE),
 									 selectInput("subset_levels",
 									 						label    = "Keep:",
 									 						selected = alldata %>% 
-									 							pull(alldata_factors_names_list$Explanatory[1]) %>% 
+									 							pull(alldata_subset_names_list$Explanatory[1]) %>% 
 									 							levels(),
 									 						choices  = alldata %>% 
-									 							pull(alldata_factors_names_list$Explanatory[1])%>%
+									 							pull(alldata_subset_names_list$Explanatory[1])%>%
 									 							levels(),
 									 						multiple = TRUE)
 									 
@@ -44,15 +50,21 @@ wellPanel(
 	checkboxInput("keep_models",
 								label = "Show only final model",
 								value = FALSE),
+	checkboxInput("missing",
+								label = "Make missing explicit",
+								value = FALSE),
 	checkboxInput("metrics",
 								label = "Include model metrics",
 								value = FALSE),
 	checkboxInput("condense",
 								label = "Do not condense output",
 								value = FALSE),
-	selectInput("confint_type",
+	radioButtons("confint_type",
 							label = "Confidence interval type ('profile' much slower, more accurate)",
 							choices = c("default", "profile"),
-							selected = "default",
-							selectize = FALSE)
+							selected = "default", inline = TRUE),
+	conditionalPanel(condition = "input.tabs == 'plot'",
+									 sliderInput("width",  "Plot Width (%)", min = 20, max = 100, value = 80, step=10),
+									 sliderInput("height", "Plot Height (px)", min = 200, max = 1000, value = 400, step=50)
+	)
 )
