@@ -90,3 +90,10 @@ dependent = reactive({
 		paste0("Surv(", input$outcome, ",", input$status, ")")	
 	}
 })
+
+# Order by total workaround
+observe({
+	if(input$orderbytotal)
+		updateCheckboxInput(session, "total_col", value = TRUE
+	)
+})	

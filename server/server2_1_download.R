@@ -2,21 +2,21 @@
 ## Todo: write in option to name files
 
 ## .csv
-output$download_csv <- downloadHandler(
-	filename = function(){"shinyfit.csv"}, 
+output$download_fit_csv <- downloadHandler(
+	filename = function(){"fit_results.csv"}, 
 	content = function(filename){
 		write.csv(results_table(), filename)
 	}
 )
 
 ## .doc
-output$download_doc <- downloadHandler(
-	filename = function(){"shinyfit.doc"},
+output$download_fit_doc <- downloadHandler(
+	filename = function(){"fit_results.doc"},
 	content = function(filename) {
 		# Copy the report file to a temporary directory before processing it, in
 		# case we don't have write permissions to the current working dir (which
 		# can happen when deployed).
-		tempReport <- file.path(tempdir(), "output.Rmd")
+		tempReport <- file.path(tempdir(), "fit_output.Rmd")
 		file.copy("output.Rmd", tempReport, overwrite = TRUE)
 		
 		# Set up parameters to pass to Rmd document
