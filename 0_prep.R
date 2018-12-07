@@ -1,8 +1,14 @@
-# Preamble to do. 
+# Shinyfit data preparation
+## Read your data to the object `alldata`
+## Work down script to prepare data object
+## This is mostly about choosing variable names for menus
+## Ensure numeric and factor variables are specified appropriately
 
 # Dataset 1 ------------------------------
 # Provide data to app
 library(finalfit)
+library(dplyr)
+library(forcats)
 
 # colon_s example
 # Read data to "alldata"
@@ -13,14 +19,24 @@ names(alldata)
 
 # Select subset of variables to keep
 alldata = alldata %>% 
-	dplyr::select(15:29, 32, 8)
+	dplyr::select(8:9, 14:23, 25, 27, 29, 32)
+
+# View dataset
+ff_glimpse(alldata)
 
 # Add variable labels if wish
 ## e.g. 
 alldata$nodes %<>% ff_label("Lymph node number")
 
-# View dataset
-ff_glimpse(alldata)
+# Recode factor levels if wish
+# alldata %<>%
+# 	mutate(
+# 		var1 = 
+# 			forcats::fct_recode(var1, 
+# 								 "New level 1" = "Old level 1",
+# 								 "New level 2" = "Old level 2"
+# 								 )
+# 		)
 
 # Extract variable names and labels. 
 alldata_names = names(alldata) 
@@ -29,16 +45,16 @@ names(alldata_names) = extract_variable_label(alldata)
 # Arrange variable names for purposes of dropdown display
 matrix(alldata_names)
 
-# Choose how to arrange the above list:
-alldata_names_list = list(Outcomes = alldata_names[c(15, 14, 10)],
-													Explanatory = alldata_names[c(11,1,3,4,5,6,7,8,9,13,2, 17)],
+# Choose how to arrange the above list (order respected):
+alldata_names_list = list(Outcomes = alldata_names[c(15, 2, 3)],
+													Explanatory = alldata_names[c(13, 4:12, 1, 14)],
 													Groups = alldata_names[16]
 )
 
 # Remove outcomes from explanatory list
 alldata_names_list_explanatory = alldata_names_list[-1]
 
-# Create lookup table of names (required)
+# Create lookup table of names
 alldata_names_lookup = extract_labels(alldata)
 
 # Create list for subsetting data, this is limited to factors
@@ -49,13 +65,13 @@ alldata_subset_names = names(alldata_subset)
 names(alldata_subset_names) = extract_variable_label(alldata_subset)
 rm(alldata_subset)
 
-# Arrange variable names for SUBSET dropdown list
+# SUBSETING: Arrange variable names for dropdown list
 matrix(alldata_subset_names)
 
 # Choose how to arrange the above list:
-alldata_subset_names_list = list(Outcomes = alldata_subset_names[c(13)],
-																	Explanatory = alldata_subset_names[c(11,1,3,4,5,6,7,8,9)],
-																	Groups = alldata_subset_names[14]
+alldata_subset_names_list = list(Outcomes = alldata_subset_names[c(12)],
+																	Explanatory = alldata_subset_names[c(10,1,2:9)],
+																	Groups = alldata_subset_names[13]
 )
 rm(alldata_subset_names)
 
@@ -76,7 +92,7 @@ class(alldata_list) = "shinyfit"
 
 save(alldata_list, file="data/alldata.rda")	
 
-# Clear workspace prior to assembling second dataset
+# Clear workspace
 rm(list=ls())
 
 
@@ -100,7 +116,7 @@ library(finalfit)
 library(dplyr)
 library(forcats)
 
-# colon_s example
+# Melanoma example
 # Read data to "alldata"
 alldata = boot::melanoma
 
@@ -173,7 +189,7 @@ alldata_subset_names_list = list(#Outcomes = "",
 rm(alldata_subset_names)
 
 # Name project
-shinyfit_name = "Melanoma dataset"
+shinyfit_name = "Melanoma survival dataset"
 dataset_label = "melanoma"
 
 # Make final list for app
@@ -191,96 +207,3 @@ save(alldata_list, file="data/alldata.rda")
 # Clear workspace prior to assembling second dataset
 rm(list=ls())
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# GS2 example	
-	# Read data to "alldata"
-	load("shinydata.rda")
-	alldata = shinydata
-	rm(shinydata)
-	
-	# Variable names
-	names(alldata)
-	
-	# Select variables to keep
-	alldata = alldata %>% 
-		dplyr::select(1, 3:25)
-	
-	# For now, and just for this example, filter unknown and missing
-	alldata = alldata %>%
-		filter_all(all_vars(. != "Unknown")) %>%
-		filter_all(all_vars(. != "Missing")) %>% 
-		mutate_all(funs(forcats::fct_drop))
-	
-	# Make all missing but add ?forcats::fct_explicit_na
-							 
-	# Extract variable names and labels. 
-	alldata_names = names(alldata) 
-	names(alldata_names) = extract_variable_label(alldata)
-	
-	# Subset variable names for purposes of dropdown display
-	matrix(alldata_names)
-	
-	alldata_names_list = list(Outcomes = alldata_names[c(19:24)],
-														Explanatory = alldata_names[c(1:18)],
-														Groups = alldata_names[1]
-	)
-	
-	# Remove outcomes from explanatory list (optional)
-	alldata_names_list_explanatory = alldata_names_list[-1]
-	
-	# Create lookup table of names (required)
-	alldata_names_lookup = extract_labels(alldata)
-	
-	# Create list of factors for subsetting
-	alldata %>% 
-		select_if(is.factor) -> alldata_factors
-	
-	alldata_factors_names = names(alldata_factors) 
-	names(alldata_factors_names) = extract_variable_label(alldata_factors)
-	
-	matrix(alldata_factors_names)
-	
-	alldata_factors_names_list = list(Outcomes = alldata_names[c(19:24)],
-														Explanatory = alldata_names[c(1:18)],
-														Groups = alldata_names[1]
-	)
-	
-	# Name project
-	shinyfit_name = "GlobalSurg2: SSI"
-	
-save(list=ls(), file="data/alldata2.rda")	

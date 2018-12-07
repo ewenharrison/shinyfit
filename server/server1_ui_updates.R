@@ -3,38 +3,12 @@ library(shinyjs)
 library(finalfit)
 
 # UI updates
-## Project name from alldata
+## Project name from alldata, this is used in document download
 observe({
 	updateTextInput(session, "h1", value = shinyfit_name)
 })
 
-## Add optional dataset selector if more than one dataset provided
-# if(dataset_n >1){
-# 	insertUI(
-# 		selector = '#placeholder',
-# 		ui = radioButtons("dataset",
-# 											label = "Select:",
-# 											#choices = c(1,2),
-# 											choiceNames = list("Dataset 1", "Dataset 2"),
-# 											choiceValues = list(1, 2),
-# 											selected = 1, 
-# 											inline=TRUE)
-# 	)}
-
-# Select dataset
-# observe({
-# 	if(!is.null(input$dataset)){
-# 		if(input$dataset == 1){
-# 			list2objects(alldata1)
-# 			js$reset()
-# 		}else if (input$dataset == 2){
-# 			list2objects(alldata2)
-# 			js$reset()
-# 		}
-# 	}
-# })
-
-## Explanatory_multi (explanatory2) to only include variables from explanatory (explanatory1)
+## Explanatory_multi (explanatory2) must only include variables from explanatory (explanatory1)
 explanatory2_update = reactive({
 	alldata_names[alldata_names %in% input$explanatory1]
 })

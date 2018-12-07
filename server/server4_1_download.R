@@ -5,7 +5,7 @@
 output$download_crosstabs_csv <- downloadHandler(
 	filename = function(){"crosstabs.csv"}, 
 	content = function(filename){
-		write.csv(crosstabs(), filename)
+		write.csv(crosstabs(), filename, row.names = FALSE)
 	}
 )
 
@@ -17,7 +17,7 @@ output$download_crosstabs_doc <- downloadHandler(
 		# case we don't have write permissions to the current working dir (which
 		# can happen when deployed).
 		tempReport <- file.path(tempdir(), "crosstabs_output.Rmd")
-		file.copy("output.Rmd", tempReport, overwrite = TRUE)
+		file.copy("crosstabs_output.Rmd", tempReport, overwrite = TRUE)
 		
 		# Set up parameters to pass to Rmd document
 		params <- list(results = crosstabs(),

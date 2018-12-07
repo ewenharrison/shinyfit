@@ -1,12 +1,14 @@
 ---
 output:
   word_document:
-    reference_docx: /home/eharrison/ShinyApps/shinyfit/template.docx
+    reference_docx: template.docx
 params:
   results: NA
   metrics: NA
   h1: NA
 ---
+
+`r download.file('http://argonaut.is.ed.ac.uk/public/template.docx', 'template.docx', mode = 'wb')` 
 
 # `r params$h1`
 

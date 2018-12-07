@@ -58,7 +58,7 @@ wellPanel(
 									 selectInput("random_effects1",
 									 						label    = "Random effects",
 									 						selected = NULL,
-									 						choices  = alldata_names_list_explanatory[2],
+									 						choices  = alldata_names_list_explanatory$Groups,
 									 						multiple = TRUE),
 									 h4('Model options'),
 									 checkboxInput("keep_models",
@@ -95,13 +95,16 @@ wellPanel(
 									 							levels(),
 									 						multiple = TRUE)
 	),
-	h4('Missing data'),
-	# Two ways of handling missing
-	# First is forcats::fct_explicit_na for fit()
-	# Second is na_include for finalfit::summary_factorlist()
-	checkboxInput("missing",
-								label = "Missing values explicit",
-								value = FALSE),
+
+	conditionalPanel(condition = "input.tabs == 'fit' | input.tabs == 'plot' | input.tabs == 'crosstabs'",
+									 h4('Missing data'),
+									 # Two ways of handling missing
+									 # First is forcats::fct_explicit_na for fit()
+									 # Second is na_include for finalfit::summary_factorlist()
+									 checkboxInput("missing",
+									 							label = "Missing values explicit",
+									 							value = FALSE)
+	),
 	conditionalPanel(condition = "input.tabs == 'crosstabs'",
 									 checkboxInput("na_include",
 									 							label = "Missing values explicit (explanatory only)",

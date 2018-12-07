@@ -5,7 +5,7 @@
 output$download_fit_csv <- downloadHandler(
 	filename = function(){"fit_results.csv"}, 
 	content = function(filename){
-		write.csv(results_table(), filename)
+		write.csv(results_table(), filename, row.names = FALSE)
 	}
 )
 
@@ -17,7 +17,7 @@ output$download_fit_doc <- downloadHandler(
 		# case we don't have write permissions to the current working dir (which
 		# can happen when deployed).
 		tempReport <- file.path(tempdir(), "fit_output.Rmd")
-		file.copy("output.Rmd", tempReport, overwrite = TRUE)
+		file.copy("fit_output.Rmd", tempReport, overwrite = TRUE)
 		
 		# Set up parameters to pass to Rmd document
 		params <- list(results = results_table(),

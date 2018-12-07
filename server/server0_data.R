@@ -1,5 +1,5 @@
 # Functions
-## To expand list to global environment objects
+## To expand data object list to global environment objects
 list2objects = function(.list){
 	for (i in 1:length(.list)){
 		assign(
@@ -9,14 +9,10 @@ list2objects = function(.list){
 	}
 }
 
-#jsResetCode <- "shinyjs.reset = function() {history.go(0)}"
-
-# Load dataset(s)
+# Load dataset
+## Future option for multiple datasets
 load("data/alldata.rda") %>% 
 	length() -> "dataset_n"
 
+# Expand shinyfit data object
 list2objects(alldata_list)
-
-# alldata <- reactive({
-# 	alldata1
-# })
