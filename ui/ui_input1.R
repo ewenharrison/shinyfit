@@ -15,6 +15,10 @@ wellPanel(
 									 						selected = alldata_names_list_explanatory$Explanatory[2],
 									 						choices  = alldata_names_list,
 									 						multiple = TRUE),
+									 selectInput("split",
+									 						label    = "Split",
+									 						choices  = alldata_names_list_explanatory,
+									 						multiple = TRUE),
 									 checkboxInput("column_prop",
 									 							label = "Column proportions",
 									 							value = TRUE),
@@ -25,7 +29,7 @@ wellPanel(
 									 							label = "Include total column",
 									 							value = FALSE),
 									 checkboxInput("orderbytotal",
-									 							label = "Order by total",
+									 							label = "Order by total (only with one explanatory)",
 									 							value = FALSE)
 									 ),
 	

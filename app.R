@@ -43,27 +43,27 @@ server <- function(input, output, session) {
 	
 	# Output
 	## Condition: only run server-side functions when a given tab is open for efficiency
-	observe({if(input$tabs == "fit"){
+	#observe({if(input$tabs == "fit"){
 		
 		# Fit table
 		source(file.path("server", "server2_fit.R"),  local = TRUE)$value
 		## Download
 		source(file.path("server", "server2_1_download.R"),  local = TRUE)$value
-	} else if (input$tabs == "plot"){
+	#} else if (input$tabs == "plot"){
 		
 		# Plot
 		source(file.path("server", "server3_plot.R"),  local = TRUE)$value		
-	} else if (input$tabs == "crosstabs"){
+	#} else if (input$tabs == "crosstabs"){
 		
 		# Crosstabs
 		source(file.path("server", "server4_crosstabs.R"),  local = TRUE)$value	
 		## Download
 		source(file.path("server", "server4_1_download.R"),  local = TRUE)$value
-	} else if (input$tabs == "glimpse"){	
+	#} else if (input$tabs == "glimpse"){	
 		# Glimpse
 		source(file.path("server", "server5_glimpse.R"),  local = TRUE)$value	
-	}
-	})
+	#}
+	#})
 }
 
 # Run application 
