@@ -36,10 +36,12 @@ subdata = reactive({
 	if(!input$subset){
 		subdata = alldata
 	}else{
+		vlabels = alldata %>% extract_variable_label()
 		subdata = alldata %>%
 			# Passing a quoted character to `filter()` is a total pain 
 			dplyr::filter(UQ(sym(input$subset_variable)) %in% input$subset_levels) %>% 
-			mutate_if(is.factor, forcats::fct_drop)
+			mutate_if(is.factor, forcats::fct_drop) %>% 
+			ff_relabel(vlabels)
 	}
 	
 	## Make missing explicit
